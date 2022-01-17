@@ -37,14 +37,14 @@ export default function Home() {
         `;
   const getOverpass = async ({ queryKey }) => {
     const [_, overpassPayload] = queryKey
-    const response = await fetch(`http://overpass-api.de/api/interpreter?data=${overpassPayload}`)
+    const response = await fetch(`//overpass-api.de/api/interpreter?data=${overpassPayload}`)
     const data = await response.json()
     return data
   }
 
   const getNominatim = async ({ queryKey }) => {
     const [_, nominatimPayload] = queryKey
-    const response = await fetch(`https://nominatim.openstreetmap.org/lookup?format=json&osm_ids=${getIdsForNominatim(nominatimPayload)}`)
+    const response = await fetch(`//nominatim.openstreetmap.org/lookup?format=json&osm_ids=${getIdsForNominatim(nominatimPayload)}`)
     const data = await response.json()
     return data
   }
