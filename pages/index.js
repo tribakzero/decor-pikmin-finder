@@ -1,7 +1,10 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import {useRouter} from "next/router";
 import {useQuery} from "react-query";
+import logo from '../public/logo.svg';
+import loading from '../public/loading.gif';
 
 export default function Home() {
   const router = useRouter();
@@ -49,7 +52,7 @@ export default function Home() {
     return data
   }
 
-  const { data:overpassData } = useQuery(
+  const { isFetching:isOverpassFetching, data:overpassData } = useQuery(
     ['overpass', oql],
     getOverpass,
     {
@@ -58,7 +61,7 @@ export default function Home() {
       initialData: { elements: [] }
     }
   )
-  const { data:nominatimData } = useQuery(
+  const { isFetching:isNominatimFetching, data:nominatimData } = useQuery(
     ['nominatim', overpassData.elements],
     getNominatim,
     {
@@ -102,7 +105,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to Decor Pikmin Finder!
+          <Image src={logo} width="100%" height="100%" alt="Welcome to Decor Pikmin Finder!" />
         </h1>
 
         {!latlong && (
@@ -110,6 +113,13 @@ export default function Home() {
             Input your lat/long into the url like this{' '}
             <code className={styles.code}>/?latlong=34.96970,135.75649</code>
           </p>
+        )}
+
+        {(isOverpassFetching || isNominatimFetching) && (
+          <>
+            <Image src={loading} width={100} height={100} />
+            Loading, please wait ...
+          </>
         )}
 
         {nominatimData && nominatimData.length > 0 && (
