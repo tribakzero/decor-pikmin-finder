@@ -5,16 +5,32 @@ import {useRouter} from "next/router";
 import {useQuery} from "react-query";
 import logo from '../public/logo.svg';
 import loading from '../public/loading.gif';
+import {useEffect, useState} from "react";
 
 export default function Home() {
   const router = useRouter();
   const {latlong} = router.query;
 
+  useEffect(() => {
+    console.log(latlong)
+    if(!latlong) {
+      if('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position => {
+          router.push(`/?latlong=${position.coords.latitude},${position.coords.longitude}`)
+        }))
+      }
+    }
+  }, [latlong])
+
   const getIdsForNominatim = (items) => items.map(item => item.type.substr(0,1).toUpperCase() + item.id).toString(',');
   const listLocationsByClassType = (locations, locationClass, locationType) => locations.filter(location => location.tags[locationClass] === locationType);
 
   const oql = `
-          [out:json][timeout:25];
+          /*
+          Currently commenting the date since query takes a crazy amount of extra time with it and returns the same data to me.
+          [date:"2021-10-26T00:00:00Z"]
+          */
+          [out:json];
           nwr(around:8000,${latlong})->.all;
   
           nwr.all(if: t["name"])["amenity"="restaurant"]; out body geom center 2;
@@ -110,7 +126,7 @@ export default function Home() {
 
         {!latlong && (
           <p className={styles.description}>
-            Input your lat/long into the url like this{' '}
+            Please, add your lat/long into the url like this:
             <code className={styles.code}>/?latlong=34.96970,135.75649</code>
           </p>
         )}
