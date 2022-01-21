@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <p className="mx-8 my-0 leading-5 text-xl">
-      Please, add your <code>lat,long</code> into the url as it follows:{' '}
+      Please, add your <code className="bg-zinc-300 p-1.5 rounded">lat,long</code> into the url as it follows:{' '}
       <Link href="/search/34.96970,135.75649">/search/34.96970,135.75649</Link>
     </p>
   )
