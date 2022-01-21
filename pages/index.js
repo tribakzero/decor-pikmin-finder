@@ -4,17 +4,13 @@ import {useEffect} from "react";
 
 export default function Home() {
   const router = useRouter();
-  const {latlong} = router.query;
-
   useEffect(() => {
-    if(!latlong) {
-      if('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((position => {
-          router.push(`/?latlong=${position.coords.latitude},${position.coords.longitude}`)
-        }))
-      }
+    if('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position => {
+        router.push(`/search/${position.coords.latitude},${position.coords.longitude}`)
+      }))
     }
-  }, [latlong])
+  }, [])
 
   return (
     <p className="mx-8 my-0 leading-5 text-xl">
