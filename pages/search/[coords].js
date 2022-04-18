@@ -18,6 +18,7 @@ export default function Coords() {
           [out:json];
           nwr(around:8000,${coords})->.all;
   
+          nwr.all(if: t["name"])["cuisine"="sushi"]; out body geom center 2;
           nwr.all(if: t["name"])["amenity"="restaurant"]; out body geom center 2;
           nwr.all(if: t["name"])["amenity"="cafe"]; out body geom center 2;
           nwr.all(if: t["name"])["shop"="confectionery"]; out body geom center 2;
@@ -72,6 +73,7 @@ export default function Coords() {
     })
 
   const locationTypes = [
+    ['cuisine','sushi'],
     ['amenity','restaurant'],
     ['amenity','cafe'],
     ['shop','confectionery'],
